@@ -30,19 +30,18 @@ client.on('message', msg => {
                 )
             }
         }
-        let callback = (err, docs) => {
-            if(!err){
-                send('G: '+JSON.stringify(docs, null, 1))
-            }
-            else{    
-                send('E: '+JSON.stringify(err, null, 1))
-            }
+        let callbackResolved = (d) => {
+            send('G: '+JSON.stringify(d, null, 1))
+        }
+
+        let callbackRejected = (e) => {
+            send('E: '+JSON.stringify(e, null, 1))
         }
     
         if (content === 'hi' || content === 'hey' || content === 'hello') {
             send('What up cutie 😉')
         }
-        else if( content === 'help' || content === 'h' ){
+        else if( content === 'help' || content === 'h' || msg.isMemberMentioned(client.user) ){
             send('Need help, huh? Here are the commands:\n'+
                 'db : Show current database\n'+
                 'show dbs : List databases\n'+
@@ -134,9 +133,9 @@ client.on('message', msg => {
             if(scheme != undefined){
 
                 let query = content.split('.')[1].split('(')[0];
-                let parameters = msg.content.split('.')[1].split('(')[1].substr(0,content.split('.')[1].split('(')[1].length-1)
+                let parameters = msg.content.split('(')[1].substr(0,content.split('(')[1].length-1)
                 if (! (parameters instanceof Object) ){
-                    //console.log(parameters)
+                    console.log(parameters)
                     if(parameters.length === 0){
                         parameters = {}
                     }
@@ -151,7 +150,8 @@ client.on('message', msg => {
                     }
                 }
                 let req;
-                //console.log(parameters)
+                console.log(parameters)
+                
 
                 if( query === 'create'){
                     req = scheme.create(parameters)
@@ -181,7 +181,7 @@ client.on('message', msg => {
                     req = database.connection.db.dropCollection(content.split('.')[0])
                 }
                 if(req != undefined) {
-                    req.then(callback)
+                    req.then(callbackResolved, callbackRejected)
                 }
             }
             else{
