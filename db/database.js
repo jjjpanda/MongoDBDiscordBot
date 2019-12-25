@@ -1,14 +1,27 @@
 const env = require('dotenv').config();
+const cron = require('node-cron');
 const mongoose = require('mongoose');
+const daemon = require('./earningsDaemon.js');
+
+const resetDaemon = cron.schedule( '1,31 * * * *', () => {
+  module.exports.connect('dev', () => {})
+  console.log('Reconnecting to DEV')
+}, {
+  scheduled: true,
+  timezone: 'America/New_York',
+})
 
 mongoose.connection.once('connected', () => {
   console.log('~MongoDB Database Connected~');
+  daemon.start()
 });
 mongoose.connection.once('error', () => {
   console.log('~MongoDB Database Error~');
+  daemon.stop()
 });
 mongoose.connection.once('disconnected', () => {
   console.log('~MongoDB Database Disconnected~');
+  daemon.stop()  
 });
 
 module.exports = {
