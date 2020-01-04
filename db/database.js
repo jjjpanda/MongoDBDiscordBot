@@ -30,6 +30,8 @@ module.exports = {
 
   admin : mongoose.mongo.Admin,
 
+  updateEarnings: daemon.daemon,
+
   connect: (url, callback) => mongoose.connect(`mongodb://${process.env.dbIP}:${process.env.dbPORT}/${url}`,
     {
       useNewUrlParser: true,

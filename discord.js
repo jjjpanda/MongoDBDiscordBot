@@ -48,6 +48,7 @@ client.on('message', msg => {
                 'use <db> : Switch databases\n'+
                 'drop db : Deletes current database\'s contents.\n' +
                 'show collections : List collections in the current database\n'+
+                'update earnings : Call earnings updater\n'+
                 'show schemas : List schemas supported by the database\n'+
                 '<schema>.<function>(<parameters>) : Find something in database. Use \'functions\' to get a list of Mongo functions.'
             );
@@ -67,6 +68,11 @@ client.on('message', msg => {
                 'This bot only allows the listed functions, go to\n'+
                 'https://mongoosejs.com/docs/models.html to do some research.'
             );
+        }
+        else if( content.split(' ')[0] === 'update'){
+            if( content.split(' ')[1] === 'earnings'){
+                database.updateEarnings()
+            }
         }
         else if( content.split(' ')[0] === 'use'){
             if(content.split(' ')[1] != undefined && content.split(' ')[1].length > 0){
@@ -213,6 +219,23 @@ client.on('message', msg => {
             }
         }
     }
+
+    else{
+        if( content === 'mango history' && msg.author.id != self){
+            msg.channel.fetchMessages().then(
+                messages => {
+                    fs.writeFile('./text/history.txt',messages.map(m => m.content).join('\n'));
+                    const attachment = new Discord.MessageAttachment('./text/history.txt');
+                    msg.channel.send('Here you go ❤', attachment)
+                },
+                err => {
+                    console.log(err)
+                    msg.channel.send(JSON.stringify(err))
+                }
+            )
+        }
+    }
+
 });
 
 client.login(process.env.TOKEN);
