@@ -3,10 +3,10 @@ const request = require('request');
 module.exports = {
 
   getERCalendar: (date, callback) => {
-    // console.log(`https://api.earningscalendar.net/?date=`+date.getFullYear()+""+(date.getMonth()+1)+""+date.getDate()+'/')
+    console.log(`${date.getFullYear()}-${(`0${date.getMonth() + 1}`).slice(-2)}-${(`0${date.getDate()}`).slice(-2)}`)
     request({
       method: 'get',
-      url: `https://api.earningscalendar.net/?date=${date.getFullYear()}${date.getMonth() + 1}${date.getDate()}/`,
+      url: `https://api.earningscalendar.net/?date=${date.getFullYear()}-${(`0${date.getMonth() + 1}`).slice(-2)}-${(`0${date.getDate()}`).slice(-2)}/`,
     },
     (error, response, body) => {
       const dateString = response.request.path.substr(response.request.path.lastIndexOf('=') + 1, 8);

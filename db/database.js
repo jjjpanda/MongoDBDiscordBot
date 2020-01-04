@@ -3,7 +3,7 @@ const cron = require('node-cron');
 const mongoose = require('mongoose');
 const daemon = require('./earningsDaemon.js');
 
-const resetDaemon = cron.schedule( '1,31 * * * *', () => {
+const resetDaemon = cron.schedule( '58 0-2 * * *', () => {
   module.exports.connect('dev', () => {})
   console.log('Reconnecting to DEV')
 }, {

@@ -4,7 +4,7 @@ const processing = require('./earningsProcessing.js');
 const Earnings = require('./models/Earnings');
 
 const daemon = cron.schedule(  //'*/30 * * * * *',
-  '0 0-3 * * *',
+  '0 0-11 * * *',
   () => {
     console.log('---DB REQUESTED CRON JOB---');
     console.log('TITLE: UPDATE EARNINGS');
