@@ -3,14 +3,6 @@ const processing = require('./earningsProcessing.js');
 
 const Earnings = require('./models/Earnings');
 
-const daemon = cron.schedule(  //'*/30 * * * * *',
-  '0 0-11 * * *',
-  daemonFunction, {
-    scheduled: false,
-    timezone: 'America/New_York',
-  },
-);
-
 const daemonFunction = () => {
   console.log('---DB REQUESTED CRON JOB---');
   console.log('TITLE: UPDATE EARNINGS');
@@ -56,6 +48,14 @@ const daemonFunction = () => {
       }
     });
 }
+
+const daemon = cron.schedule(  //'*/30 * * * * *',
+  '0 0-11 * * *',
+  daemonFunction, {
+    scheduled: false,
+    timezone: 'America/New_York',
+  },
+);
 
 module.exports = {
   start: daemon.start,
