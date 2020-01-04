@@ -20,6 +20,26 @@ client.on('message', msg => {
 
     let content = msg.content.toLocaleLowerCase()
     let self = client.user.id
+
+    if( content === 'mango history' && msg.author.id != self){
+        msg.channel.fetchMessages({limit: 100}).then(
+            (messages) => {
+                fs.writeFile('./text/history.txt', messages.map(m => m.content).join('\n'), (err, data) => {
+                    if(err) {
+                        console.log('error', err);
+                        msg.channel.send(JSON.stringify(err))
+                    }
+                    else {
+                        const attachment = new Discord.Attachment('./text/history.txt', 'history.txt');
+                        msg.channel.send('Here you go ❤', attachment)
+                    }
+                });
+            }
+        ).catch(err => {
+            console.log(err)
+            msg.channel.send(JSON.stringify(err))
+        })
+    }
     
     if(msg.channel.name === 'the-ai-realm' && msg.author.id != self){
 
@@ -217,22 +237,6 @@ client.on('message', msg => {
             else{
                 send('Uhh, something messed up. IDK what. Maybe the schema is incorrect')
             }
-        }
-    }
-
-    else{
-        if( content === 'mango history' && msg.author.id != self){
-            msg.channel.fetchMessages().then(
-                messages => {
-                    fs.writeFile('./text/history.txt',messages.map(m => m.content).join('\n'));
-                    const attachment = new Discord.MessageAttachment('./text/history.txt');
-                    msg.channel.send('Here you go ❤', attachment)
-                },
-                err => {
-                    console.log(err)
-                    msg.channel.send(JSON.stringify(err))
-                }
-            )
         }
     }
 
