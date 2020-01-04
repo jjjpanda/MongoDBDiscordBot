@@ -5,7 +5,7 @@ const Earnings = require('./models/Earnings');
 
 const daemon = cron.schedule(  //'*/30 * * * * *',
   '0 0-11 * * *',
-  daemon, {
+  daemonFunction, {
     scheduled: false,
     timezone: 'America/New_York',
   },
