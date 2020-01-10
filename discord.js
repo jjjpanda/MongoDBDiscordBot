@@ -85,6 +85,7 @@ client.on('message', msg => {
         else if( content.split(' ')[0] === 'update'){
             if( content.split(' ')[1] === 'earnings'){
                 database.updateEarnings()
+                send('Updating earnings in database: ' + database.connection.name + " 😎")
             }
         }
         else if( content.split(' ')[0] === 'use'){
