@@ -2,25 +2,26 @@ const env = require('dotenv').config();
 const cron = require('node-cron');
 const mongoose = require('mongoose');
 const daemon = require('./earningsDaemon.js');
+const appendLogs = require('./appendLogs.js')
 
 const resetDaemon = cron.schedule( '58 0-2 * * *', () => {
   module.exports.connect('dev', () => {})
-  console.log('Reconnecting to DEV')
+  appendLogs('', 'Reconnecting to DEV')
 }, {
   scheduled: true,
   timezone: 'America/New_York',
 })
 
 mongoose.connection.once('connected', () => {
-  console.log('~MongoDB Database Connected~');
+  appendLogs('./text/logs.txt', '~MongoDB Database Connected~');
   daemon.start()
 });
 mongoose.connection.once('error', () => {
-  console.log('~MongoDB Database Error~');
+  appendLogs('./text/logs.txt', '~MongoDB Database Error~');
   daemon.stop()
 });
 mongoose.connection.once('disconnected', () => {
-  console.log('~MongoDB Database Disconnected~');
+  appendLogs('./text/logs.txt', '~MongoDB Database Disconnected~');
   daemon.stop()  
 });
 
@@ -44,24 +45,28 @@ module.exports = {
     })
     .then(
       () => {
-        console.log('Database Connect Callback Received');
+        appendLogs('./text/logs.txt', 'Database Connect Callback Received');
         callback(true);
       },
       (error) => {
-        console.log(error);
-        try { callback(false) } catch (error) { console.log(error); }
+        appendLogs('./text/logs.txt', 'Error')
+        try { callback(false) } catch (error) { 
+          appendLogs('./text/logs.txt', 'Error')
+        }
       },
     ),
 
   disconnect: (callback) => mongoose.disconnect()
     .then(
       () => {
-        console.log('Database Disconnect Callback Received');
+        appendLogs('./text/logs.txt', 'Database Disconnect Callback Received');
         callback(true);
       },
       (error) => {
-        console.log(error);
-        try { callback(false) } catch (error) { console.log(error); }
+        appendLogs('./text/logs.txt', 'Error')
+        try { callback(false) } catch (error) { 
+          appendLogs('./text/logs.txt', 'Error')
+        }
       },
     ),
 
