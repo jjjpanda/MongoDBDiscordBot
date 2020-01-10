@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const modelsDir = './db/models/';
 const fs = require('fs');
+const appendLogs = require('./db/appendLogs.js')
 
 const database = require('./db/database.js')
 database.connect('dev', () => {})
@@ -12,8 +13,18 @@ fs.readdirSync(modelsDir).forEach(fileName => {
     schema[fileName.split('.')[0].toLocaleLowerCase()] = require(modelsDir+fileName)
 })
 
+fs.writeFile('./text/logs.txt', '', (err, date) => {
+    if(err) {
+        console.log('error', err);
+        msg.channel.send(JSON.stringify(err))
+    }
+    else {
+        console.log('Log text file reset')
+    }
+})
+
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+  appendLogs('./text/logs.txt',`Logged in as ${client.user.tag}!`);
 });
 
 client.on('message', msg => {
@@ -143,7 +154,7 @@ client.on('message', msg => {
                 let query = content.split('.')[1].split('(')[0];
                 let parameters = msg.content.split('(')[1].substr(0,content.split('(')[1].length-1)
                 if (! (parameters instanceof Object) ){
-                    console.log(parameters)
+                    appendLogs('./text/logs.txt', parameters)
                     if(parameters.length === 0){
                         parameters = {}
                     }
@@ -158,7 +169,7 @@ client.on('message', msg => {
                     }
                 }
                 let req;
-                console.log(parameters)
+                appendLogs('./text/logs.txt', parameters)
                 
 
                 if( query === 'create'){
@@ -228,7 +239,7 @@ client.on('message', msg => {
                 (messages) => {
                     fs.writeFile('./text/history.txt', messages.map(m => m.content).join('\n'), (err, data) => {
                         if(err) {
-                            console.log('error', err);
+                            appendLogs('./text/logs.txt', 'error in writing to history.txt');
                             msg.channel.send(JSON.stringify(err))
                         }
                         else {
@@ -238,9 +249,16 @@ client.on('message', msg => {
                     });
                 }
             ).catch(err => {
-                console.log(err)
+                appendLogs('./text/logs.txt', 'error in fetching messages')
                 msg.channel.send(JSON.stringify(err))
             })
+        }
+
+        else if( content === 'mango logs'){
+           
+            const attachment = new Discord.Attachment('./text/logs.txt', 'logs.txt');
+            msg.channel.send('Here you go ❤', attachment)
+
         }
 
         else if(  msg.isMemberMentioned(client.user) ){
