@@ -1,4 +1,5 @@
 const request = require('request');
+const appendLogs = require('./appendLogs.js')
 
 module.exports = {
 
@@ -9,7 +10,7 @@ module.exports = {
     },
     (error, response, body) => {
       const dateString = response.request.path.substr(response.request.path.lastIndexOf('=') + 1, 10);
-      console.log(dateString)
+      appendLogs('./text/logs.txt',dateString)
       const urlDate = new Date(dateString.split('-')[0], parseInt(dateString.split('-')[1]) - 1, dateString.split('-')[2]);
       if (!error && response.statusCode == 200 && body.length != 0) {
         for (const report of JSON.parse(body)) {
@@ -17,7 +18,7 @@ module.exports = {
         }
       } else {
         // Error
-        console.log('EARNINGS API ERROR');
+        appendLogs('./text/logs.txt','EARNINGS API ERROR');
       }
     });
   },
