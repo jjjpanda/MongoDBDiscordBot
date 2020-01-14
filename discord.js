@@ -6,7 +6,14 @@ const fs = require('fs');
 const appendLogs = require('./db/appendLogs.js')
 
 const database = require('./db/database.js')
-database.connect('dev', () => {})
+database.connect('dev', (success) => {
+    if(success){
+        send('Defaulted to dev');
+    }
+    else {
+        send("Something went wrong with defaulting to dev");
+    }
+})
 
 let schema = {}
 fs.readdirSync(modelsDir).forEach(fileName => {
