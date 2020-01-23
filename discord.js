@@ -6,14 +6,17 @@ const fs = require('fs');
 const appendLogs = require('./db/appendLogs.js')
 
 const database = require('./db/database.js')
-database.connect('dev', (success) => {
-    if(success){
-        send('Defaulted to dev');
-    }
-    else {
-        send("Something went wrong with defaulting to dev");
-    }
-})
+const connectDatabase = () => {
+    database.connect('dev', (success) => {
+        if(success){
+            send('Defaulted to dev');
+        }
+        else {
+            send("Something went wrong with defaulting to dev");
+        }
+    })
+}
+connectDatabase()
 
 let schema = {}
 fs.readdirSync(modelsDir).forEach(fileName => {
@@ -28,6 +31,17 @@ fs.writeFile('./text/logs.txt', '', (err, date) => {
     else {
         console.log('Log text file reset')
     }
+})
+
+client.on('disconnect', () => {
+    connectDatabase()
+    client.login(process.env.TOKEN);
+})
+
+
+client.on('error', () => {
+    connectDatabase()
+    client.login(process.env.TOKEN);
 })
 
 client.on('ready', () => {

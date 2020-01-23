@@ -5,6 +5,7 @@ const appendLogs = require('./appendLogs.js')
 const Earnings = require('./models/Earnings');
 
 const daemonFunction = () => {
+  /*
   appendLogs('./text/logs.txt', '---DB REQUESTED CRON JOB---');
   appendLogs('./text/logs.txt', 'TITLE: UPDATE EARNINGS');
   let date = new Date();
@@ -48,6 +49,9 @@ const daemonFunction = () => {
         appendLogs('./text/logs.txt', 'UPDATE EARNINGS: Previous Dates Removed');
       }
     });
+    */
+   
+  appendLogs('./text/logs.txt', '---DB REQUESTED JOB DISABLED---');
 }
 
 const daemon = cron.schedule(  //'*/30 * * * * *',
