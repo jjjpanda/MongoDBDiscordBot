@@ -9,10 +9,10 @@ const database = require('./db/database.js')
 const connectDatabase = () => {
     database.connect('dev', (success) => {
         if(success){
-            send('Defaulted to dev');
+            appendLogs('./text/logs.txt', 'Defaulted to dev');
         }
         else {
-            send("Something went wrong with defaulting to dev");
+            appendLogs('./text/logs.txt', "Something went wrong with defaulting to dev");
         }
     })
 }
