@@ -33,15 +33,28 @@ fs.writeFile('./text/logs.txt', '', (err, date) => {
     }
 })
 
+
+let loginAttempts = 3;
+
 client.on('disconnect', () => {
     connectDatabase()
-    client.login(process.env.TOKEN);
+    loginAttempts--;
+    if(loginAttempts > 0){
+        client.login(process.env.TOKEN).catch((err) => {
+            appendLogs('./server/logs/logs.txt', 'Discord Bot Login Failed\n' + err)
+        });
+    }
 })
 
 
 client.on('error', () => {
     connectDatabase()
-    client.login(process.env.TOKEN);
+    loginAttempts--;
+    if(loginAttempts > 0){
+        client.login(process.env.TOKEN).catch((err) => {
+            appendLogs('./server/logs/logs.txt', 'Discord Bot Login Failed\n' + err)
+        });
+    }
 })
 
 client.on('ready', () => {
@@ -310,4 +323,6 @@ client.on('message', msg => {
     }
 });
 
-client.login(process.env.TOKEN);
+client.login(process.env.TOKEN).catch((err) => {
+    appendLogs('./server/logs/logs.txt', 'Discord Bot Login Failed\n' + err)
+});
