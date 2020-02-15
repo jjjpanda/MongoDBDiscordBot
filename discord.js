@@ -52,18 +52,19 @@ client.on('message', msg => {
 
     let content = msg.content.toLocaleLowerCase()
     let self = client.user.id
+
+    let send = (str) => {
+        for (let i = 0; i < str.length; i += 2000){
+            client.channels.get(msg.channel.id).send(
+                str.substring(i, Math.min(str.length, i + 2000))
+            )
+        }
+    }
     
     if(msg.author.id != self){
 
     if(msg.channel.name === 'the-ai-realm'){
 
-        let send = (str) => {
-            for (let i = 0; i < str.length; i += 2000){
-                client.channels.get(msg.channel.id).send(
-                    str.substring(i, Math.min(str.length, i + 2000))
-                )
-            }
-        }
         let callbackResolved = (d) => {
             send('G: '+JSON.stringify(d, null, 1))
         }
@@ -262,24 +263,24 @@ client.on('message', msg => {
                     fs.writeFile('./text/history.txt', messages.map(m => m.content).join('\n'), (err, data) => {
                         if(err) {
                             appendLogs('./text/logs.txt', 'error in writing to history.txt');
-                            msg.channel.send(JSON.stringify(err))
+                            send(JSON.stringify(err))
                         }
                         else {
                             const attachment = new Discord.Attachment('./text/history.txt', 'history.txt');
-                            msg.channel.send('Here you go ❤', attachment)
+                            send('Here you go ❤', attachment)
                         }
                     });
                 }
             ).catch(err => {
                 appendLogs('./text/logs.txt', 'error in fetching messages')
-                msg.channel.send(JSON.stringify(err))
+                send(JSON.stringify(err))
             })
         }
 
         else if( content === 'mango logs'){
            
             const attachment = new Discord.Attachment('./text/logs.txt', 'logs.txt');
-            msg.channel.send('Here you go ❤', attachment)
+            send('Here you go ❤', attachment)
 
         }
 
@@ -294,9 +295,9 @@ client.on('message', msg => {
                 json: true
               }, (error, response, body) => {
                 if (!error && response.statusCode === 200) {
-                    msg.channel.send(body)
+                    send(body)
                 } else {
-                    msg.channel.send('Something messed up. Sorry 😥')
+                    send('Something messed up. Sorry 😥')
                 }
             });
         }
