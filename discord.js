@@ -286,7 +286,7 @@ client.on('message', msg => {
         else if( content === 'oo logs'){
            
             request({
-                method: 'get',
+                method: 'post',
                 url: 'http://www.outsmartoptions.live/dev/logs',
                 qs: {
                   token: process.env.logToken,
