@@ -291,6 +291,7 @@ client.on('message', msg => {
                 body: {
                   token: process.env.logToken,
                 },
+                json: true
               }, (error, response, body) => {
                 if (!error && response.statusCode === 200) {
                     msg.channel.send(body)
