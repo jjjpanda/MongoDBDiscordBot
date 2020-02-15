@@ -288,7 +288,7 @@ client.on('message', msg => {
             request({
                 method: 'post',
                 url: 'http://www.outsmartoptions.live/dev/logs',
-                qs: {
+                body: {
                   token: process.env.logToken,
                 },
               }, (error, response, body) => {
