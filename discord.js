@@ -41,7 +41,7 @@ client.on('disconnect', () => {
     loginAttempts--;
     if(loginAttempts > 0){
         client.login(process.env.TOKEN).catch((err) => {
-            appendLogs('./server/logs/logs.txt', 'Discord Bot Login Failed\n' + err)
+            appendLogs('./text/logs.txt', 'Discord Bot Login Failed\n' + err)
         });
     }
 })
@@ -52,7 +52,7 @@ client.on('error', () => {
     loginAttempts--;
     if(loginAttempts > 0){
         client.login(process.env.TOKEN).catch((err) => {
-            appendLogs('./server/logs/logs.txt', 'Discord Bot Login Failed\n' + err)
+            appendLogs('./text/logs.txt', 'Discord Bot Login Failed\n' + err)
         });
     }
 })
@@ -324,5 +324,5 @@ client.on('message', msg => {
 });
 
 client.login(process.env.TOKEN).catch((err) => {
-    appendLogs('./server/logs/logs.txt', 'Discord Bot Login Failed\n' + err)
+    appendLogs('./text/logs.txt', 'Discord Bot Login Failed\n' + err)
 });
