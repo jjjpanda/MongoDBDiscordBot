@@ -4,6 +4,7 @@ const client = new Discord.Client();
 const modelsDir = './db/models/';
 const fs = require('fs');
 const appendLogs = require('./db/appendLogs.js')
+const request = require('request')
 
 const database = require('./db/database.js')
 const connectDatabase = () => {
@@ -280,6 +281,26 @@ client.on('message', msg => {
             const attachment = new Discord.Attachment('./text/logs.txt', 'logs.txt');
             msg.channel.send('Here you go ❤', attachment)
 
+        }
+
+        else if( content === 'oo logs'){
+           
+            request({
+                method: 'get',
+                url: 'http://www.outsmartoptions.live/dev/logs',
+                qs: {
+                  token: process.env.logToken,
+                },
+              }, (error, response, body) => {
+                if (!error && response.statusCode === 200) {
+                    msg.channel.send(response)
+                    msg.channel.send(body)
+                    const attachment = new Discord.Attachment('./text/logs.txt', 'logs.txt');
+                    msg.channel.send('Here you go ❤', attachment)
+                } else {
+                    msg.channel.send('Something messed up. Sorry 😥')
+                }
+            });
         }
 
         else if(  msg.isMemberMentioned(client.user) ){
