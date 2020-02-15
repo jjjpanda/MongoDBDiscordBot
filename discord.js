@@ -293,10 +293,7 @@ client.on('message', msg => {
                 },
               }, (error, response, body) => {
                 if (!error && response.statusCode === 200) {
-                    msg.channel.send(response)
                     msg.channel.send(body)
-                    const attachment = new Discord.Attachment('./text/logs.txt', 'logs.txt');
-                    msg.channel.send('Here you go ❤', attachment)
                 } else {
                     msg.channel.send('Something messed up. Sorry 😥')
                 }
