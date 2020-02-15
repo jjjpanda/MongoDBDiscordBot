@@ -26,7 +26,6 @@ fs.readdirSync(modelsDir).forEach(fileName => {
 fs.writeFile('./text/logs.txt', '', (err, date) => {
     if(err) {
         console.log('error', err);
-        msg.channel.send(JSON.stringify(err))
     }
     else {
         console.log('Log text file reset')
