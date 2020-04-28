@@ -67,12 +67,17 @@ client.on('message', msg => {
     let content = msg.content.toLocaleLowerCase()
     let self = client.user.id
 
-    let send = (str) => {
-        for (let i = 0; i < str.length; i += 2000){
-            client.channels.get(msg.channel.id).send(
-                str.substring(i, Math.min(str.length, i + 2000))
-            )
+    let send = (str, attachment) => {
+        if(attachment == undefined){
+            for (let i = 0; i < str.length; i += 2000){
+                client.channels.get(msg.channel.id).send(
+                    str.substring(i, Math.min(str.length, i + 2000))
+                )
+            } 
+        } else {
+            client.channels.get(msg.channel.id).send(str.substring(0, Math.min(str.length, 2000)), attachment)
         }
+        
     }
     
     if(msg.author.id != self){
