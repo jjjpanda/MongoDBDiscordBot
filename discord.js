@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const modelsDir = './db/models/';
 const fs = require('fs');
+const path = require('path')
 const appendLogs = require('./db/appendLogs.js')
 const request = require('request')
 
@@ -279,7 +280,7 @@ client.on('message', msg => {
                             send(JSON.stringify(err))
                         }
                         else {
-                            const attachment = new Discord.Attachment('./text/history.txt', 'history.txt');
+                            const attachment = new Discord.Attachment(path.resolve('./text/history.txt'), 'history.txt');
                             send('Here you go ❤', attachment)
                         }
                     });
@@ -292,7 +293,7 @@ client.on('message', msg => {
 
         else if( content === 'mango logs'){
            
-            const attachment = new Discord.Attachment('./text/logs.txt', 'logs.txt');
+            const attachment = new Discord.Attachment(path.resolve('./text/logs.txt'), 'logs.txt');
             send('Here you go ❤', attachment)
 
         }
