@@ -273,10 +273,7 @@ client.on('message', msg => {
                 send('Uhh, something messed up. IDK what. Maybe the schema is incorrect')
             }
         }
-    }
-
-    else{
-        if( content === 'mango history'){
+        else if( content === 'mango history'){
             msg.channel.fetchMessages({limit: 100}).then(
                 (messages) => {
                     fs.writeFile('./text/history.txt', messages.map(m => m.content).join('\n'), (err, data) => {
@@ -320,8 +317,12 @@ client.on('message', msg => {
                 }
             });
         }
+    }
 
-        else if(  msg.isMemberMentioned(client.user) ){
+    else{
+        
+
+        if(  msg.isMemberMentioned(client.user) ){
             msg.channel.send('What do you want? 😡 You have to enter the AI Realm to talk to me! 🙄 Idiot...')
         }
     }
