@@ -80,7 +80,7 @@ client.on('message', msg => {
         
     }
     
-    if(msg.author.id != self){
+    if(msg.author.id != self || !msg.author.bot){
 
     if(msg.channel.name === 'the-ai-realm'){
 
