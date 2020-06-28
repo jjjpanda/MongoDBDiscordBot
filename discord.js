@@ -9,12 +9,12 @@ const request = require('request')
 
 const database = require('./db/database.js')
 const connectDatabase = () => {
-    database.connect('dev', (success) => {
+    database.connect(process.env.MONGODB_URI.split('/')[3], (success) => {
         if(success){
-            appendLogs('./text/logs.txt', 'Defaulted to dev');
+            appendLogs('./text/logs.txt', 'Defaulted');
         }
         else {
-            appendLogs('./text/logs.txt', "Something went wrong with defaulting to dev");
+            appendLogs('./text/logs.txt', "Something went wrong with defaulting");
         }
     })
 }

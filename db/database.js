@@ -33,15 +33,16 @@ module.exports = {
 
   updateEarnings: daemon.daemon,
 
-  connect: (url, callback) => mongoose.connect(`mongodb://${process.env.dbIP}:${process.env.dbPORT}/${url}`,
+  connect: (url, callback) => mongoose.connect(process.env.MONGODB_URI,
+    //`mongodb://${process.env.dbIP}:${process.env.dbPORT}/${url}`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      auth: {
+      /* auth: {
         authSource: 'admin',
         user: process.env.dbNAME,
         password: process.env.dbPWD,
-      },
+      }, */
     })
     .then(
       () => {
