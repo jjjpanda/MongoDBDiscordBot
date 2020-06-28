@@ -1,1 +1,6 @@
-
+Mango 🥭 watching port 8080!
+Logged in as 🥭DB#9661!
+Error
+~MongoDB Database Disconnected~
+Something went wrong with defaulting
+~MongoDB Database Error~
