@@ -346,5 +346,5 @@ client.login(process.env.TOKEN).catch((err) => {
     state = 'down'
 });
 
-const port = 8080 || process.env.PORT;
+const port = process.env.PORT || 8080;
 app.listen(port, () => appendLogs('./text/logs.txt', `Mango 🥭 watching port ${port}!`));
