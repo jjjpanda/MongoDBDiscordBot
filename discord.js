@@ -6,15 +6,24 @@ const fs = require('fs');
 const path = require('path')
 const appendLogs = require('./db/appendLogs.js')
 const request = require('request')
+const express = require('express');
+
+const app = express();
 
 const database = require('./db/database.js')
 const connectDatabase = () => {
     database.connect(process.env.MONGODB_URI.split('/')[3], (success) => {
         if(success){
             appendLogs('./text/logs.txt', 'Defaulted');
+            app.use("/*", (req, res) => {
+                res.status(200).send('Mango 🥭 is up.');
+            });
         }
         else {
             appendLogs('./text/logs.txt', "Something went wrong with defaulting");
+            app.use("/*", (req, res) => {
+                res.status(200).send('Mango 🥭 is down.');
+            });
         }
     })
 }
@@ -135,9 +144,15 @@ client.on('message', msg => {
                     database.connect(content.split(' ')[1], (success) => {
                         if(success){
                             send('Switched to ' + content.split(' ')[1]);
+                            app.use("/*", (req, res) => {
+                                res.status(200).send('Mango 🥭 is up.');
+                            });
                         }
                         else {
                             send("Something went wrong with connecting to " + content.split(' ')[1]);
+                            app.use("/*", (req, res) => {
+                                res.status(200).send('Mango 🥭 is down.');
+                            });
                         }
                         
                     })
@@ -333,3 +348,6 @@ client.on('message', msg => {
 client.login(process.env.TOKEN).catch((err) => {
     appendLogs('./text/logs.txt', 'Discord Bot Login Failed\n' + err)
 });
+
+const port = 8181 || process.env.PORT;
+app.listen(port, () => appendLogs('./server/logs/logs.txt', `Mango 🥭 watching port ${port}!`));
