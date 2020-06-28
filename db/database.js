@@ -33,7 +33,7 @@ module.exports = {
 
   updateEarnings: daemon.daemon,
 
-  connect: (url, callback) => mongoose.connect(process.env.MONGODB_URI,
+  connect: (url, callback) => mongoose.connect(`${process.env.MONGODB_URI.split('/')[0]}/${process.env.MONGODB_URI.split('/')[1]}/${process.env.MONGODB_URI.split('/')[2]}/${url}`,
     //`mongodb://${process.env.dbIP}:${process.env.dbPORT}/${url}`,
     {
       useNewUrlParser: true,
